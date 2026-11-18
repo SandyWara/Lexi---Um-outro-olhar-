@@ -1,0 +1,9 @@
+LEXI - OPÇÃO EXCLUIR LIVRO
+
+1. Abra FRONTEND/lexi.html com Live Server. Nos cards de livros aparecerá o botão Excluir.
+2. Ao clicar, confirme a exclusão. O front envia DELETE /api/livros/{id}.
+3. A alteração Java está em BACKEND_REFERENCIA_NAO_MODIFICADO/src/main/java/com/lexi/lexi_api/controller/LivroController.java (esta pasta é uma CÓPIA MODIFICADA para revisão, apesar do nome legado).
+4. O responsável pelo Back-end precisa revisar, testar e publicar no Render; sem isso, a API atual retorna HTTP 405.
+5. Não foi executado teste integrado com o MySQL. Livros com registros associados (biblioteca/arquivo/progresso) podem provocar erro de chave estrangeira ao excluir.
+6. AVISO DE SEGURANÇA: a rota de exemplo não valida permissões. Não publicar para uso real sem autenticação e autorização de exclusão, senão qualquer visitante pode apagar qualquer livro.
+7. Sem a rota publicada, o frontend avisa o erro e mantém o livro no catálogo.

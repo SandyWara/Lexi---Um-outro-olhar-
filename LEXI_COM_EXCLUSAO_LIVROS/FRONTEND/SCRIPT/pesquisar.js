@@ -12,7 +12,7 @@ async function executarFiltragem() {
     let encontrouAlgum = false;
 
     let livrosParaPesquisar = CATALOGO_LIVROS;
-    if (termo && ['titulo', 'autor', 'genero'].includes(tipo)) {
+    if (termo && ['todos', 'titulo', 'autor', 'genero'].includes(tipo)) {
         try {
             const encontrados = await lexiServico.buscarLivros(tipo, termo);
             if (!Array.isArray(encontrados)) throw new Error('Resultado inesperado');

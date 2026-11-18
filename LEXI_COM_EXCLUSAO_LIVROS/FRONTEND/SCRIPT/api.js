@@ -19,6 +19,8 @@ const lexiServico = {
     listarLivros: () => lexiApi('/livros'),
     buscarLivros: (tipo, termo) => lexiApi(`/livros?${encodeURIComponent(tipo)}=${encodeURIComponent(termo)}`),
     obterLivro: (id) => lexiApi(`/livros/${encodeURIComponent(id)}`),
+    cadastrarLivro: (livro) => lexiApi('/livros', { method: 'POST', body: JSON.stringify(livro) }),
+    excluirLivro: (id) => lexiApi(`/livros/${encodeURIComponent(id)}`, { method: 'DELETE' }),
     cadastrarUsuario: (usuario) => lexiApi('/usuarios', { method: 'POST', body: JSON.stringify(usuario) }),
     obterPreferencias: (id) => lexiApi(`/usuarios/${encodeURIComponent(id)}/preferencias`),
     salvarPreferencias: (id, preferencias) => lexiApi(`/usuarios/${encodeURIComponent(id)}/preferencias`, {

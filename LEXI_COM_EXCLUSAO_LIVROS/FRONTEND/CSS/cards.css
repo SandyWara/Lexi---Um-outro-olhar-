@@ -127,3 +127,17 @@
     .carrossel-track .book-card { flex: 0 0 115px !important } 
     .btn-scroll { display: none; }
 }
+/* Botão de exclusão de livro do catálogo */
+.btn-excluir-livro {
+    margin-top: 10px;
+    padding: 7px 12px;
+    border-radius: 6px;
+    border: 1px solid #8f2020;
+    background: #fff5ed;
+    color: #7d1b1b;
+    font: inherit;
+    cursor: pointer;
+    width: 100%;
+}
+.btn-excluir-livro:hover, .btn-excluir-livro:focus-visible { background: #ffe2d6; }
+.btn-excluir-livro:disabled { opacity: .5; cursor: wait; }

@@ -12,7 +12,10 @@ function renderizarVitrine() {
     containerVitrine.className = "";
     containerVitrine.innerHTML = "";
 
-    if (CATALOGO_LIVROS.length === 0) return;
+    if (CATALOGO_LIVROS.length === 0) {
+        containerVitrine.textContent = ERRO_CATALOGO_API ? 'Não foi possível obter livros do servidor. Confira a API.' : 'Ainda não existem livros cadastrados no banco.';
+        return;
+    }
     const catalogoPublico = CATALOGO_LIVROS.filter(l => l.genero !== 'Documentos');
 
     const destaques = catalogoPublico.filter(l => l.genero === 'Romance' || l.genero === 'Clássicos');
@@ -34,6 +37,7 @@ const criarCarrossel = (titulo, livros) => {
             <div class="card-title-area">
                 <h3 style="font-size: 1.2rem; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${livro.titulo}</h3>
                 <p style="font-size: 0.9rem; opacity: 0.9;">${livro.autor} • ${livro.ano}</p>
+                <button type="button" class="btn-excluir-livro" data-id-livro="${livro.id}" aria-label="Excluir livro ${livro.titulo}">Excluir</button>
             </div>
         </article>
     `).join('');
@@ -53,7 +57,31 @@ const criarCarrossel = (titulo, livros) => {
     containerVitrine.innerHTML += criarCarrossel("Livros em alta", destaques);
     containerVitrine.innerHTML += criarCarrossel("Livros para refletir", refletir);
     containerVitrine.innerHTML += criarCarrossel("Livros para relaxar", relaxar);
+    const exibidos = new Set([...destaques, ...refletir, ...relaxar].map(l => l.id));
+    containerVitrine.innerHTML += criarCarrossel("Outros livros", catalogoPublico.filter(l => !exibidos.has(l.id)));
 }
+
+// Exclui um livro cadastrado; só remove o card depois de a API confirmar a exclusão.
+document.addEventListener('click', async (evento) => {
+    const botao = evento.target.closest('.btn-excluir-livro');
+    if (!botao) return;
+    evento.preventDefault();
+    const id = botao.dataset.idLivro;
+    const livro = CATALOGO_LIVROS.find(item => String(item.id) === String(id));
+    if (!livro || !/^\d+$/.test(String(id))) return;
+    if (!window.confirm(`Excluir o livro "${livro.titulo}" do banco de dados? Essa ação não poderá ser desfeita.`)) return;
+    botao.disabled = true;
+    try {
+        await lexiServico.excluirLivro(id);
+        CATALOGO_LIVROS = CATALOGO_LIVROS.filter(item => String(item.id) !== String(id));
+        renderizarVitrine();
+        window.alert('Livro excluído do banco de dados.');
+    } catch (erro) {
+        console.error('Falha ao excluir livro:', erro);
+        window.alert('Não foi possível excluir o livro. Confira se a rota DELETE /api/livros/{id} foi publicada no servidor.');
+        botao.disabled = false;
+    }
+});
 
 window.addEventListener('load', async () => {
     await carregarDadosJSON();

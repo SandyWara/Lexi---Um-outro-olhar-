@@ -1,5 +1,6 @@
 let CATALOGO_LIVROS = [];
 let BIBLIOTECAS_USUARIOS = {};
+let ERRO_CATALOGO_API = false;
 
 // A interface espera id, ano e capa; a API documenta idLivro e anoPublicacao.
 function adaptarLivroApi(livro, capasLocais = []) {
@@ -27,10 +28,12 @@ async function carregarDadosJSON() {
     try {
         const livros = await lexiServico.listarLivros();
         if (!Array.isArray(livros)) throw new Error('A API não retornou uma lista de livros.');
+        ERRO_CATALOGO_API = false;
         CATALOGO_LIVROS = livros.map(livro => adaptarLivroApi(livro, bibliotecaLocal.catalogo || []));
         console.info('Catálogo carregado pela API:', CATALOGO_LIVROS.length, 'livros');
     } catch (erro) {
         console.error('Não foi possível carregar livros da API:', erro);
+        ERRO_CATALOGO_API = true;
         CATALOGO_LIVROS = [];
         const vitrine = document.getElementById('tela-livros');
         if (vitrine) vitrine.innerHTML = '<p role="alert">Não foi possível obter os livros do servidor. Tente atualizar a página.</p>';

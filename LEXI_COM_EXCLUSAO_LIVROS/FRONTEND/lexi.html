@@ -123,6 +123,22 @@
             *Formatos suportados para leitura acessível: .pdf, .epub, .txt
         </p>
     </div>
+    <form id="form-cadastro-livro" style="max-width: 600px; margin: 24px auto 0; padding: 24px; border: 2px solid var(--azul-profundo); border-radius: 12px; display: flex; flex-direction: column; gap: 12px;">
+        <h3>Cadastrar livro</h3>
+        <p>Preencha os dados do livro para enviar ao servidor.</p>
+        <label for="cad-livro-titulo">Título</label>
+        <input id="cad-livro-titulo" name="titulo" type="text" maxlength="250" required>
+        <label for="cad-livro-autor">Autor</label>
+        <input id="cad-livro-autor" name="autor" type="text" maxlength="200" required>
+        <label for="cad-livro-genero">Gênero</label>
+        <input id="cad-livro-genero" name="genero" type="text" maxlength="100" required>
+        <label for="cad-livro-ano">Ano de publicação (opcional)</label>
+        <input id="cad-livro-ano" name="anoPublicacao" type="number" min="0" max="2100" step="1">
+        <label for="cad-livro-conteudo">Texto do livro (opcional)</label>
+        <textarea id="cad-livro-conteudo" name="conteudo" rows="5"></textarea>
+        <button id="btn-cadastrar-livro" type="submit" class="btn-tema">Salvar livro no banco</button>
+        <p id="status-cadastro-livro" role="status" aria-live="polite"></p>
+    </form>
 </section>
 
  <!-- TELA DE SINCRONIZAR -->
@@ -287,5 +303,6 @@
     <script src="SCRIPT/pesquisar.js"></script>
     <script src="SCRIPT/biblioteca.js"></script>
     <script src="SCRIPT/cadastro-api.js"></script>
+    <script src="SCRIPT/cadastro-livros-api.js"></script>
 </body>
 </html>
